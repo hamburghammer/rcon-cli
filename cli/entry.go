@@ -14,17 +14,17 @@
 // limitations under the License.
 //
 
-
 package cli
 
 import (
-	"github.com/james4k/rcon"
-	"os"
-	"log"
 	"bufio"
-	"io"
 	"fmt"
+	"io"
+	"log"
+	"os"
 	"strings"
+
+	"github.com/james4k/rcon"
 )
 
 func Start(hostPort string, password string, in io.Reader, out io.Writer) {

@@ -11,6 +11,7 @@ import (
 	"github.com/james4k/rcon"
 )
 
+// Start a interactive connection. Uses the given reader and writer to inteact with the created connection.
 func Start(hostPort string, password string, in io.Reader, out io.Writer) {
 	remoteConsole, err := rcon.Dial(hostPort, password)
 	if err != nil {
@@ -22,13 +23,13 @@ func Start(hostPort string, password string, in io.Reader, out io.Writer) {
 	out.Write([]byte("> "))
 	for scanner.Scan() {
 		cmd := scanner.Text()
-		reqId, err := remoteConsole.Write(cmd)
+		reqID, err := remoteConsole.Write(cmd)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "Failed to send command:", err.Error())
 			continue
 		}
 
-		resp, respReqId, err := remoteConsole.Read()
+		resp, respID, err := remoteConsole.Read()
 		if err != nil {
 			if err == io.EOF {
 				return
@@ -37,7 +38,7 @@ func Start(hostPort string, password string, in io.Reader, out io.Writer) {
 			continue
 		}
 
-		if reqId != respReqId {
+		if reqID != respID {
 			fmt.Fprintln(out, "Weird. This response is for another request.")
 		}
 
@@ -50,6 +51,7 @@ func Start(hostPort string, password string, in io.Reader, out io.Writer) {
 	}
 }
 
+// Execute runs the given command against the remote console and writes the response into the writer.
 func Execute(hostPort string, password string, out io.Writer, command ...string) {
 	remoteConsole, err := rcon.Dial(hostPort, password)
 	if err != nil {
@@ -58,9 +60,9 @@ func Execute(hostPort string, password string, out io.Writer, command ...string)
 	defer remoteConsole.Close()
 
 	preparedCmd := strings.Join(command, " ")
-	reqId, err := remoteConsole.Write(preparedCmd)
+	reqID, err := remoteConsole.Write(preparedCmd)
 
-	resp, respReqId, err := remoteConsole.Read()
+	resp, respID, err := remoteConsole.Read()
 	if err != nil {
 		if err == io.EOF {
 			return
@@ -69,7 +71,7 @@ func Execute(hostPort string, password string, out io.Writer, command ...string)
 		return
 	}
 
-	if reqId != respReqId {
+	if reqID != respID {
 		fmt.Fprintln(out, "Weird. This response is for another request.")
 	}
 

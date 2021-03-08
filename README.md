@@ -2,53 +2,44 @@
 [![CircleCI](https://img.shields.io/circleci/build/github/itzg/rcon-cli)](https://app.circleci.com/pipelines/github/itzg/rcon-cli)
 
 
-A little RCON cli based on james4k's RCON library for golang.
+A little RCON cli written in golang.
+
+This is a fork from [itzg/rcon-cli](https://github.com/itzg/rcon-cli) with following extra features:
+- Provied a smaller binary (ca. 50% smaller).
+- Replace base RCON lib from [james4k/rcon](https://github.com/james4k/rcon) with [hamburghammer/rcon](https://github.com/hamburghammer/rcon).
+- Remove `config.yml` support.
+- Change the `Dockerfile` to have build support.
 
 ## Installation
+### From Source
+Clone the repository and install it with `go install` (requires working `go` installation)
 
-1. Download the appropriate binary for your platform from the [latest releases](https://github.com/itzg/rcon-cli/releases/latest)
+### Docker/Podman
+Clone the repository and use docker/podman to build a image with the executable `docker build -t hamburghammer/rcon-cli .`
+Start the image `docker run hamburghammer/rcon-cli -h`
 
-2. On UNIX-y platforms, set the binary to be executable
-
-Done.
 
 ## Usage
 
 ```text
-rcon-cli is a CLI for attaching to an RCON enabled game server, such as Minecraft.
-Without any additional arguments, the CLI will start an interactive session with
-the RCON server.
+rcon-cli is a CLI to interact with a RCON server.
+It can be run in an interactive mode or to execute a single command.
 
-If arguments are passed into the CLI, then the arguments are sent
-as a single command (joined by spaces), the response is displayed,
-and the CLI will exit.
+USAGE:
+	rcon-cli [FLAGS] [RCON command ...]
+	
+FLAGS:
+  -h, --help              Prints this help message and exits.
+      --host string       RCON server's hostname. (default "localhost")
+      --password string   RCON server's password.
+      --port string       RCON server's port. (default "25575")
 
-Usage:
-  rcon-cli [flags] [RCON command ...]
+ENVIRONMENT VARIABLE:
+	All flags can be set through the flag name in capslock with the RCON_CLI_ prefix (see examples).
+	Flags have allways priority over env vars!
 
-Examples:
-
-rcon-cli --host mc1 --port 25575
-rcon-cli --port 25575 stop
-RCON_PORT=25575 rcon-cli stop
-
-
-Flags:
-      --config string     config file (default is $HOME/.rcon-cli.yaml)
-      --host string       RCON server's hostname (default "localhost")
-      --password string   RCON server's password
-      --port int          Server's RCON port (default 27015)
+EXAMPLES:
+	rcon-cli --host 127.0.0.1 --port 25575
+	rcon-cli --password admin123 stop
+	RCON_CLI_PORT=25575 rcon-cli stop
 ```
-
-## Configuration
-
-You can preconfigure rcon-cli to use the arguments you want by default by modifying the file `.rcon-cli.yaml` in your home folder. If you want to use any other file use the argument `--config /path/to/the/config.yaml`. 
-
-Example of a `.rcon-cli.yaml` file:
-```yaml
-host: mydomain.com
-port: 12345
-password: mycustompassword
-```
-
-That way executing `rcon-cli` without arguments would connect to `mydomain.com:12345` with the password `mycustompassword` by default.

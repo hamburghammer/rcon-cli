@@ -20,9 +20,14 @@ func Start(hostPort string, password string, in io.Reader, out io.Writer) {
 	defer remoteConsole.Close()
 
 	scanner := bufio.NewScanner(in)
+	out.Write([]byte("To quit the session type 'exit'.\n"))
 	out.Write([]byte("> "))
 	for scanner.Scan() {
 		cmd := scanner.Text()
+		if cmd == "exit" {
+			return
+		}
+
 		reqID, err := remoteConsole.Write(cmd)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "Failed to send command:", err.Error())

@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/james4k/rcon"
+	"github.com/hamburghammer/rcon"
 )
 
 // Start a interactive connection. Uses the given reader and writer to inteact with the created connection.

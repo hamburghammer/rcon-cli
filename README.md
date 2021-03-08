@@ -1,7 +1,4 @@
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/itzg/rcon-cli)](https://github.com/itzg/rcon-cli/releases/latest)
-[![CircleCI](https://img.shields.io/circleci/build/github/itzg/rcon-cli)](https://app.circleci.com/pipelines/github/itzg/rcon-cli)
-
-
+# rcon-cli
 A little RCON cli written in golang.
 
 This is a fork from [itzg/rcon-cli](https://github.com/itzg/rcon-cli) with following extra features:
